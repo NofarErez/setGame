@@ -6,10 +6,9 @@
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
 
-#ifndef PlayingCard_h
-#define PlayingCard_h
-
 #import "Card.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayingCard : Card
 
@@ -21,4 +20,4 @@
 
 @end
 
-#endif /* PlayingCard_h */
+NS_ASSUME_NONNULL_END

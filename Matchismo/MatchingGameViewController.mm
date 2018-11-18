@@ -1,16 +1,16 @@
 //
-//  ViewController.m
+//  MatchingGameViewController.m
 //  Matchismo
 //
 //  Created by Nofar Erez on 12/11/2018.
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
 
-#import "ViewController.h"
+#import "MatchingGameViewController.h"
 #import "PlayingCardDeck.h"
 #import "CardMatchingGame.h"
 
-@interface ViewController ()
+@interface MatchingGameViewController ()
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectionSegment;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
@@ -19,7 +19,7 @@
 @property (strong, nonatomic) CardMatchingGame *game;
 @end
 
-@implementation ViewController
+@implementation MatchingGameViewController
 
 - (Deck *) createDeck
 {
