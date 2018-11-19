@@ -14,15 +14,21 @@
 
 @implementation Card
 
-- (int)match:(NSArray *)otherCards
++ (int)match:(NSArray *)otherCards
 {
+    NSLog(@"wrong place");
     int score = 0;
     
-    for (Card *card in otherCards)
+    for (int i = 0; i < [otherCards count]; i++)
     {
-        if ([card.contents isEqualToString:self.contents])
+        Card *card = otherCards[i];
+        for (int j = 0; j < [otherCards count] && j < i; j++)
         {
-            score = 1;
+            Card *otherCard = otherCards[j];
+            if ([card.contents isEqualToString:otherCard.contents])
+            {
+                score += 1;
+            }
         }
     }
     

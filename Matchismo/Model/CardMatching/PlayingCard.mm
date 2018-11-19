@@ -54,20 +54,26 @@
     return @[@"?", @"A", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"J", @"Q", @"K"];
 }
 
-- (int)match:(NSArray *)otherCards
++ (int)match:(NSArray *)otherCards
 {
     int score = 0;
+    NSLog(@"right place");
     
-    if ([otherCards count] == 1)
+    for (int i = 0; i < [otherCards count]; i++)
     {
-        PlayingCard *otherCard = [otherCards firstObject];
-        if ([self.suit isEqualToString:otherCard.suit])
+
+        PlayingCard *card = otherCards[i];
+        for (int j = 0; j < [otherCards count] && j < i; j++)
         {
-            score = 6;
-        }
-        else if (self.rank == otherCard.rank)
-        {
-            score = 12;
+            PlayingCard *otherCard = otherCards[j];
+            if ([card.suit isEqualToString:otherCard.suit])
+            {
+                score += 1;
+            }
+            else if (card.rank == otherCard.rank)
+            {
+                score += 4;
+            }
         }
     }
     

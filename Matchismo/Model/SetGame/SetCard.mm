@@ -9,14 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 NSUInteger kSimilarParameters = 1;
 NSUInteger kUniqueParameters = 3;
-NSUInteger kCardsToMatch = 3;
-
-
 
 
 - (NSString *) contents
 {
-    return nil;
+    return [@"" stringByPaddingToLength:self.rank  withString:self.shape startingAtIndex:0];
 }
 
 + (BOOL) validParameter: (NSSet *)parameters
@@ -24,44 +21,39 @@ NSUInteger kCardsToMatch = 3;
     return [parameters count] == kSimilarParameters || [parameters count] == kUniqueParameters;
 }
 
-- (BOOL) matchShape: (NSArray *)cards
++ (BOOL) matchShape: (NSArray *)cards
 {
     NSSet *shapes = [NSSet setWithArray:[cards valueForKey:@"shape"]];
     return [SetCard validParameter:shapes];
 }
 
-- (BOOL) matchRank: (NSArray *)cards
++ (BOOL) matchRank: (NSArray *)cards
 {
     NSSet *ranks = [NSSet setWithArray:[cards valueForKey:@"rank"]];
     return [SetCard validParameter:ranks];
 }
 
-- (BOOL) matchColor: (NSArray *)cards
++ (BOOL) matchColor: (NSArray *)cards
 {
     NSSet *colors = [NSSet setWithArray:[cards valueForKey:@"color"]];
     return [SetCard validParameter:colors];
 }
 
-- (BOOL) matchShade: (NSArray *)cards
++ (BOOL) matchShade: (NSArray *)cards
 {
     NSSet *shades = [NSSet setWithArray:[cards valueForKey:@"shade"]];
     return [SetCard validParameter:shades];
 }
 
-- (int)match:(NSArray *)otherCards
++ (int)match:(NSArray *)otherCards
 {
     int score = 0;
-    if ([otherCards count] == kCardsToMatch - 1)
+    if([SetCard matchRank:otherCards] && [SetCard matchColor:otherCards] &&
+       [SetCard matchShape:otherCards] && [SetCard matchShade:otherCards])
     {
-        NSMutableArray *cards = [NSMutableArray arrayWithArray:otherCards]; // copy?
-        [cards addObject:self];
-        if([self matchRank:cards] && [self matchColor:cards] &&
-           [self matchShape:cards] && [self matchShade:cards])
-        {
-            score = 3;
-        }
+        score = 3;
     }
-    
+
     return score;
 }
 
