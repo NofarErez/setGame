@@ -133,9 +133,11 @@ NS_ASSUME_NONNULL_BEGIN
     }
 }
 
-- (void) matchCards
+- (int) matchCards
 {
-    
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 @end

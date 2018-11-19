@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSUInteger rank;
 @property (nonatomic) float shade;
 
+- (instancetype) initWithCard:(Card *)card;
+
 + (NSArray *) validShapes;
 + (NSArray *) validShades;
 + (NSArray *) validColors;

@@ -10,10 +10,31 @@ NS_ASSUME_NONNULL_BEGIN
 NSUInteger kSimilarParameters = 1;
 NSUInteger kUniqueParameters = 3;
 
+@synthesize contents = _contents;
+
+- (instancetype) initWithCard:(Card *)card
+{
+    if (self = [super init])
+    {
+        if ([card isKindOfClass:[SetCard class]])
+        {
+            self.shape = [card valueForKey:@"shape"];
+            self.color = [card valueForKey:@"color"];
+            self.rank = [[card valueForKey:@"rank"] integerValue];
+            self.shade = [[card valueForKey:@"shade"] floatValue];
+        }
+    }
+    
+    return self;
+}
 
 - (NSString *) contents
 {
-    return [@"" stringByPaddingToLength:self.rank  withString:self.shape startingAtIndex:0];
+    if(!_contents)
+    {
+        _contents = [@"" stringByPaddingToLength:self.rank  withString:self.shape startingAtIndex:0];
+    }
+    return _contents;
 }
 
 + (BOOL) validParameter: (NSSet *)parameters
@@ -64,12 +85,12 @@ NSUInteger kUniqueParameters = 3;
 
 + (NSArray *) validShades
 {
-    return @[@0.3, @0.6, @1.0];
+    return @[@0.1, @0.6, @1.0];
 }
 
 + (NSArray *) validColors
 {
-    return @[@"red", @"blue", @"green"];
+    return @[@"Red", @"Blue", @"Green"];
 }
 
 + (NSArray *) validRanks

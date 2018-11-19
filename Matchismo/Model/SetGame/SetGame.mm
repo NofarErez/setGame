@@ -12,6 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
     return [SetCard match:self.testMatchCards];
 }
 
+- (instancetype) initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
+{
+    if (self = [super initWithCardCount:count usingDeck:deck])
+    {
+        self.matchMode = 3;
+    }
+    
+    return self;
+}
+
+
 @end
 
 NS_ASSUME_NONNULL_END

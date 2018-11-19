@@ -7,26 +7,19 @@
 //
 
 #import "MatchingGameViewController.h"
-#import "PlayingCardDeck.h"
 #import "CardMatchingGame.h"
-
-@interface MatchingGameViewController ()
-
-@property (weak, nonatomic) IBOutlet UISegmentedControl *modeSelectionSegment;
-@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardsButtons;
-@property (weak, nonatomic) IBOutlet UILabel *cardSelectionLabel;
-@property (strong, nonatomic) CardMatchingGame *game;
-@end
+#import "PlayingCardDeck.h"
 
 @implementation MatchingGameViewController
+
+@synthesize game = _game;
 
 - (Deck *) createDeck
 {
     return [[PlayingCardDeck alloc] init];
 }
 
-- (CardMatchingGame *) game
+- (Game *) game
 {
     if (!_game)
     {
@@ -35,76 +28,6 @@
     return _game;
 }
 
-- (IBAction)touchRestartButton:(id)sender
-{
-    self.game = nil;
-    [self game];
-    [self updateUIMatchingResult];
-    self.modeSelectionSegment.userInteractionEnabled = YES;
-    [self updateChoosenCardLabel:-1];
-
-
-}
-
-- (IBAction)touchCardButton:(UIButton *)sender
-{
-    NSUInteger cardIndex = [self.cardsButtons indexOfObject:sender];
-    
-    if (self.modeSelectionSegment.enabled)
-    {
-        self.game.matchMode = self.modeSelectionSegment.selectedSegmentIndex + 2;
-        self.modeSelectionSegment.userInteractionEnabled = NO;
-    }
-    
-    [self updateChoosenCardLabel:cardIndex];
-    [self.game chooseCardAtIndex:cardIndex];
-    [self updateUIMatchingResult];
-    
-}
-
-- (void) updateChoosenCardLabel: (NSInteger)cardIndex
-{
-    if(cardIndex > 0)
-    {
-        Card *card = [self.game cardAtIndex:cardIndex];
-        self.cardSelectionLabel.text = [NSString stringWithFormat:@"You chose: %@", card.contents];
-    }
-    else
-    {
-        self.cardSelectionLabel.text = @"";
-
-    }
-}
-
--
-(void) updateChosenCards: (NSUInteger)cardIndex
-{
-    
-}
-
-
-- (void) updateUIMatchingResult
-{
-    for (UIButton *cardButton in self.cardsButtons)
-    {
-        NSUInteger cardIndex = [self.cardsButtons indexOfObject:cardButton];
-        Card *card = [self.game cardAtIndex:cardIndex];
-        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
-        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
-        cardButton.enabled = !card.matched;
-    }
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-    
-    if (self.game.readyToMatch)
-    {
-        [self updateMatchingResultLabel];
-    }
-    else
-    {
-        [self updateChosenCards:-1];
-    }
-    
-}
 
 - (void) updateMatchingResultLabel
 {
@@ -120,9 +43,10 @@
     }
 }
 
-- (NSString *) titleForCard: (Card *)card
+- (NSAttributedString *) titleForCard: (Card *)card
 {
-    return card.chosen ? card.contents : @"";
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:card.chosen ? card.contents : @"" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+    return title;
 }
 
 - (UIImage *) backgroundImageForCard: (Card *)card

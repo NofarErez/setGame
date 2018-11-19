@@ -22,6 +22,15 @@ typedef NS_OPTIONS(NSUInteger, MatchMode)
     _matchMode = matchMode == MatchModeThree ? MatchModeThree : MatchModeTwo;
 }
 
+- (instancetype) initWithCardCount:(NSUInteger)count usingDeck:(Deck *)deck
+{
+    if (self = [super initWithCardCount:count usingDeck:deck])
+    {
+        self.matchMode = 2;
+    }
+    
+    return self;
+}
 
 - (int) matchCards
 {

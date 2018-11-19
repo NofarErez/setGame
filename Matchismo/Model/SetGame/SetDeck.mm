@@ -10,9 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)init
 {
-    self = [super init];
-    
-    if (self)
+    if (self = [super init])
     {
         for (NSString *shape in [SetCard validShapes])
         {
