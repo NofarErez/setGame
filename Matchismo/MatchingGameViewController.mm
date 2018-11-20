@@ -1,14 +1,11 @@
-//
-//  MatchingGameViewController.m
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import "MatchingGameViewController.h"
 #import "CardMatchingGame.h"
 #import "PlayingCardDeck.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation MatchingGameViewController
 
@@ -53,5 +50,6 @@
     // Do any additional setup after loading the view, typically from a nib.
 }
 
-
 @end
+
+NS_ASSUME_NONNULL_END

@@ -1,25 +1,26 @@
-//
-//  Card.h
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
-
-#ifndef Card_h
-#define Card_h
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
+// Object used as an abstract class representing a card.
 @interface Card : NSObject
 
+// String representation of the content of the card.
 @property (strong, nonatomic) NSString *contents;
 
+// Boolean that represent whether the card was chosen.
 @property (nonatomic) BOOL chosen;
+
+// Boolean that represent whether the card was matched.
 @property (nonatomic) BOOL matched;
 
-+ (int)match:(NSArray *)otherCards;
+// Class method that returns the match score of the given \c cards.
++ (int)match:(NSArray *)cards;
 
 @end
 
-#endif /* Card_h */
+NS_ASSUME_NONNULL_END
+

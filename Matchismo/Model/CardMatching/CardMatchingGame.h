@@ -5,8 +5,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// Object used as a Card Matching game.
 @interface CardMatchingGame : Game
-
 
 @end
 

@@ -100,11 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [self updateMatchingResultLabel];
     }
-//    else
-//    {
-//        [self updateChoosenCardLabel:-1];
-//    }
-    
+
 }
 
 

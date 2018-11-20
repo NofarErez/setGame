@@ -1,12 +1,9 @@
-//
-//  Deck.m
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import "Deck.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface Deck()
 
@@ -56,3 +53,5 @@
 
 
 @end
+
+NS_ASSUME_NONNULL_END

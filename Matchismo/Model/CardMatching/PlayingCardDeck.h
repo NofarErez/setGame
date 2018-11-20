@@ -6,14 +6,14 @@
 //  Copyright © 2018 Lightricks. All rights reserved.
 //
 
-#ifndef PlayingCardDeck_h
-#define PlayingCardDeck_h
-
 #import "Deck.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+// Object used as a Card Matching deck.
 @interface PlayingCardDeck : Deck
 
 @end
 
 
-#endif /* PlayingCardDeck_h */
+NS_ASSUME_NONNULL_END

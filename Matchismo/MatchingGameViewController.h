@@ -1,16 +1,16 @@
-//
-//  MatchingGameViewController.h
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import <UIKit/UIKit.h>
 #import "GameViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+// Object used as the Card Matching Game controller.
 @interface MatchingGameViewController : GameViewController
 
-
 @end
+
+NS_ASSUME_NONNULL_END
+
 

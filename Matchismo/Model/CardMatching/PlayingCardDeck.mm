@@ -1,13 +1,10 @@
-//
-//  PlayingCardDeck.m
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import "PlayingCardDeck.h"
 #import "PlayingCard.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation PlayingCardDeck
 
@@ -32,5 +29,6 @@
     return self;
 }
 
-
 @end
+
+NS_ASSUME_NONNULL_END

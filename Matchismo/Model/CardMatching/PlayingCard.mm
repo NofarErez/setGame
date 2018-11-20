@@ -1,12 +1,9 @@
-//
-//  PlayingCard.m
-//  Matchismo
-//
-//  Created by Nofar Erez on 12/11/2018.
-//  Copyright © 2018 Lightricks. All rights reserved.
-//
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 
 #import "PlayingCard.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation PlayingCard
 
@@ -54,18 +51,18 @@
     return @[@"?", @"A", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"10", @"J", @"Q", @"K"];
 }
 
-+ (int)match:(NSArray *)otherCards
++ (int)match:(NSArray *)cards
 {
     int score = 0;
     NSLog(@"right place");
     
-    for (int i = 0; i < [otherCards count]; i++)
+    for (int i = 0; i < [cards count]; i++)
     {
 
-        PlayingCard *card = otherCards[i];
-        for (int j = 0; j < [otherCards count] && j < i; j++)
+        PlayingCard *card = cards[i];
+        for (int j = 0; j < [cards count] && j < i; j++)
         {
-            PlayingCard *otherCard = otherCards[j];
+            PlayingCard *otherCard = cards[j];
             if ([card.suit isEqualToString:otherCard.suit])
             {
                 score += 1;
@@ -82,3 +79,5 @@
 
 
 @end
+
+NS_ASSUME_NONNULL_END

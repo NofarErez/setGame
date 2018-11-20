@@ -66,11 +66,11 @@ NSUInteger kUniqueParameters = 3;
     return [SetCard validParameter:shades];
 }
 
-+ (int)match:(NSArray *)otherCards
++ (int)match:(NSArray *)cards
 {
     int score = 0;
-    if([SetCard matchRank:otherCards] && [SetCard matchColor:otherCards] &&
-       [SetCard matchShape:otherCards] && [SetCard matchShade:otherCards])
+    if([SetCard matchRank:cards] && [SetCard matchColor:cards] &&
+       [SetCard matchShape:cards] && [SetCard matchShade:cards])
     {
         score = 3;
     }
