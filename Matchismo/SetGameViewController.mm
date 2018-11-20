@@ -45,19 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
     return cardImage;
 }
 
-- (void) updateMatchingResultLabel
-{
-    NSString *cardsString = [[self.game.testMatchCards valueForKey:@"contents"] componentsJoinedByString: @", "];
-    
-    if (self.game.foundMatches)
-    {
-        self.cardSelectionLabel.text = [NSString stringWithFormat:@"Matched %@ 🎉", cardsString];
-    }
-    else
-    {
-        self.cardSelectionLabel.text = [NSString stringWithFormat:@"The cards %@ don't Match 😕", cardsString];
-    }
-}
 
 - (NSAttributedString *) titleForCard: (Card *)card
 {

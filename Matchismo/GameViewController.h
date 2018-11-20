@@ -12,10 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) Game *game;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardsButtons;
+@property (strong, nonatomic) NSMutableAttributedString *history;
+
 
 - (void) updateMatchingResultLabel;
 - (NSAttributedString *) titleForCard: (Card *)card;
 - (UIImage *) backgroundImageForCard: (Card *)card;
+- (NSAttributedString *) buttonTitleForCard:(Card *)card;
 
 @end
 

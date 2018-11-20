@@ -29,23 +29,16 @@
 }
 
 
-- (void) updateMatchingResultLabel
-{
-    NSString *cardsString = [[self.game.testMatchCards valueForKey:@"contents"] componentsJoinedByString: @", "];
 
-    if (self.game.foundMatches)
-    {
-        self.cardSelectionLabel.text = [NSString stringWithFormat:@"Matched %@ 🎉", cardsString];
-    }
-    else
-    {
-        self.cardSelectionLabel.text = [NSString stringWithFormat:@"The cards %@ don't Match 😕", cardsString];
-    }
+
+- (NSAttributedString *) buttonTitleForCard:(Card *)card
+{
+    return card.chosen ? [self titleForCard:card] : nil;
 }
 
 - (NSAttributedString *) titleForCard: (Card *)card
 {
-    NSAttributedString *title = [[NSAttributedString alloc] initWithString:card.chosen ? card.contents : @"" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:card.contents attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
     return title;
 }
 
