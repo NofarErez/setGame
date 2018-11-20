@@ -8,7 +8,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GameViewController()
-
 @end
 
 @implementation GameViewController
@@ -20,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
         if ([segue.destinationViewController isKindOfClass:[GameHistoryViewController class]])
         {
             GameHistoryViewController *historyController = (GameHistoryViewController *)segue.destinationViewController;
-            dispatch_async(dispatch_get_main_queue(),
-                           ^{
-                               [historyController.historyText setAttributedText:self.history];
-                           });        }
+            historyController.history = self.history;
+            
+        }
+        
     }
 }
 
@@ -70,7 +69,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void) updateChoosenCardLabel: (NSInteger)cardIndex
 {
-    if(cardIndex > 0)
+    if(cardIndex >= 0)
     {
         Card *card = [self.game cardAtIndex:cardIndex];
         if ([card chosen])
