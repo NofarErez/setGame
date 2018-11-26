@@ -3,6 +3,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Game.h"
+#import "Grid.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -13,10 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) Game *game;
 @property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardsButtons;
-@property (strong, nonatomic) NSMutableAttributedString *history;
-
-// A method that updated the result of a match.
-- (void) updateMatchingResultLabel;
+@property (weak, nonatomic) IBOutlet UIView *cardsView;
+@property (strong, nonatomic) Grid *grid;
+@property (strong, nonatomic) NSArray *cards;
 
 // A method that returns the representation of a card.
 - (NSAttributedString *) titleForCard: (Card *)card;
@@ -29,6 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Method to create a new instance of a deck.
 - (Deck *) createDeck;
+
+- (void)drawCards;
+
+- (void) updateUIMatchingResult;
+
+- (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card;
+
+- (Game *)createGame;
 
 @end
 

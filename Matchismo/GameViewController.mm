@@ -2,29 +2,17 @@
 // Created by Nofar Erez.
 
 #import "GameViewController.h"
-#import "Game.h"
-#import "GameHistoryViewController.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GameViewController()
+@property (weak, nonatomic) IBOutlet UIView *ButtonsView;
+
 @end
 
 @implementation GameViewController
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:sender
-{
-    if ([segue.identifier isEqualToString:@"History"])
-    {
-        if ([segue.destinationViewController isKindOfClass:[GameHistoryViewController class]])
-        {
-            GameHistoryViewController *historyController = (GameHistoryViewController *)segue.destinationViewController;
-            historyController.history = self.history;
-            
-        }
-        
-    }
-}
+static const int kCardCount = 12;
 
 - (Deck *) createDeck
 {
@@ -40,67 +28,36 @@ NS_ASSUME_NONNULL_BEGIN
                                  userInfo:nil];
 }
 
--(NSMutableAttributedString *) history
+- (Game *) createGame
 {
-    if (!_history)
-    {
-        _history = [[NSMutableAttributedString alloc] init];
-    }
-    
-    return _history;
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
+
+
 - (IBAction)touchRestartButton:(id)sender
 {
-    self.game = nil;
-    self.history = nil;
-    [self game];
-    [self updateUIMatchingResult];
-    [self updateChoosenCardLabel:-1];
+    [self.cardsView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    [self setupGame];
+    [self drawCards];
+//    [self game];
+//    [self updateUIMatchingResult];
 }
 
 - (IBAction)touchCardButton:(UIButton *)sender
 {
     NSUInteger cardIndex = [self.cardsButtons indexOfObject:sender];
     [self.game chooseCardAtIndex:cardIndex];
-    [self updateChoosenCardLabel:cardIndex];
     [self updateUIMatchingResult];
-    
 }
 
-- (void) updateChoosenCardLabel: (NSInteger)cardIndex
-{
-    if(cardIndex >= 0)
-    {
-        Card *card = [self.game cardAtIndex:cardIndex];
-        if ([card chosen])
-        {
-            NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString: @"You chose: " attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-            NSAttributedString *cardTitle = [self titleForCard:card];
-            [message appendAttributedString:cardTitle];
-            [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-            [self.history appendAttributedString:message];
-        }
-        else
-        {
-            NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString: @"You unchose: " attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-            NSAttributedString *cardTitle = [self titleForCard:card];
-            [message appendAttributedString:cardTitle];
-            [message appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
-            [self.history appendAttributedString:message];
-        }
-    }
-}
+
 
 - (void) updateUIMatchingResult
 {
     [self updateCardButtons];
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
-    
-    if (self.game.readyToMatch)
-    {
-        [self updateMatchingResultLabel];
-    }
-
 }
 
 
@@ -112,61 +69,87 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 
-- (UIImage *) backgroundImageForCard: (Card *)card
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
+//- (UIImage *) backgroundImageForCard: (Card *)card
+//{
+//    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+//                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
+//                                 userInfo:nil];
+//}
+//
+//- (NSAttributedString *) buttonTitleForCard:(Card *)card
+//{
+//    return [self titleForCard:card];
+//}
+//
+
+- (void)rearangeBoard {
+    
 }
 
-- (NSAttributedString *) buttonTitleForCard:(Card *)card
+
+- (void)removeCard:(NSMutableArray *)cardsView {
+    for (UIView *cardView in cardsView)
+    {
+        [UIView transitionWithView:cardView duration:1.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+            [cardView removeFromSuperview];
+        } completion:NULL];
+    }
+    [self rearangeBoard];
+}
+
+- (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card
 {
-    return [self titleForCard:card];
+    
 }
 
 - (void) updateCardButtons
 {
-    for (UIButton *cardButton in self.cardsButtons)
+    NSMutableArray *cardsToRemove = [[NSMutableArray alloc] init];
+    for (UIView *cardView in self.cardsView.subviews)
     {
-        NSUInteger cardIndex = [self.cardsButtons indexOfObject:cardButton];
+        NSUInteger cardIndex = [self.cardsView.subviews indexOfObject:cardView];
         Card *card = [self.game cardAtIndex:cardIndex];
-        [cardButton setAttributedTitle:[self buttonTitleForCard:card] forState:UIControlStateNormal];
-        [cardButton setBackgroundImage:[self backgroundImageForCard:card] forState:UIControlStateNormal];
-        cardButton.enabled = !card.matched;
+        [self updateChosenFromCard:cardView fromCard:card];
+        if(card.matched) {
+//            [cardsToRemove addObject:cardView];
+            [UIView transitionWithView:self.cardsView duration:1.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+                [cardView removeFromSuperview];
+            } completion:NULL];
+            [self.game removeCardAtIndex:cardIndex];
+        }
+
     }
     
+//    if ([cardsToRemove count]) {
+//        [self removeCard:cardsToRemove];
+//    }
 }
 
-- (void) updateMatchingResultLabel
-{
-    NSMutableAttributedString *cardsString = [[NSMutableAttributedString alloc] init];
-    for (Card* card in self.game.testMatchCards)
-    {
-        [cardsString appendAttributedString:[self titleForCard:card]];
-        [cardsString appendAttributedString:[[NSAttributedString alloc] initWithString: @" "]];
-    }
+- (void)setupGame {
     
-    NSMutableAttributedString *matchResult = [[NSMutableAttributedString alloc] init];;
-    if (self.game.foundMatches)
-    {
-        matchResult = [[NSMutableAttributedString alloc] initWithString:@"Matched " attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-        [matchResult appendAttributedString: cardsString];
-        [matchResult appendAttributedString: [[NSMutableAttributedString alloc] initWithString:@"🎉\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}]];
+    self.grid = [[Grid alloc] init];
+    self.grid.cellAspectRatio = 0.666;
+    self.grid.size = self.cardsView.bounds.size; // what is the right size?
+//    NSLog(@"%@", self.cardsView.bounds);
+//    NSLog(@"%d", kCardCount);
+    self.grid.minimumNumberOfCells = kCardCount;
+    
+    [self createGame];
+}
 
-    }
-    else
-    {
-        matchResult = [[NSMutableAttributedString alloc] initWithString:@"The cards " attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}];
-        [matchResult appendAttributedString: cardsString];
-        [matchResult appendAttributedString: [[NSMutableAttributedString alloc] initWithString:@"don't Match 😕\n" attributes:@{NSForegroundColorAttributeName : [UIColor blackColor]}]];
-    }
-    
-    [self.history appendAttributedString:matchResult];
+- (void)drawCards {
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [self setupGame];
+
+    [self drawCards];
+
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self updateCardButtons];
 }
 
 @end

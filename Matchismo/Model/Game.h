@@ -20,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Abstract method that preform the actual matching of cards.
 - (int) matchCards;
 
+- (void)removeCardAtIndex:(NSUInteger)index;
+
 // The score of the game.
 @property (nonatomic, readonly) NSInteger score;
 

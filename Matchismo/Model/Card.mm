@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (int)match:(NSArray *)otherCards
 {
-    NSLog(@"wrong place");
     int score = 0;
     
     for (int i = 0; i < [otherCards count]; i++)

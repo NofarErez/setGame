@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (Card *)drawRandomCard
 {
-    Card *randomCard = nil;
+    Card *randomCard;
     if ([self.cards count])
     {
         unsigned index = arc4random() % [self.cards count];

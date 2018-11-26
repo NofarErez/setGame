@@ -80,6 +80,13 @@ NS_ASSUME_NONNULL_BEGIN
     
 }
 
+- (void)removeCardAtIndex:(NSUInteger)index {
+  if (index >= 0)
+  {
+      [self.cards removeObjectAtIndex:index];
+  }
+}
+
 - (void) chooseCardAtIndex:(NSUInteger)index
 {
     //remove all objects after testing for a match

@@ -54,7 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (int)match:(NSArray *)cards
 {
     int score = 0;
-    NSLog(@"right place");
     
     for (int i = 0; i < [cards count]; i++)
     {
