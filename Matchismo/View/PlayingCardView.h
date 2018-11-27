@@ -12,9 +12,8 @@
 
 @property (nonatomic) NSUInteger rank;
 @property (strong, nonatomic) NSString *suit;
-@property (nonatomic) BOOL faceUp;
+@property (nonatomic) BOOL chosen;
 
 - (void)pinch:(UIPinchGestureRecognizer *)gesture;
-- (void)flipCard;
 
 @end

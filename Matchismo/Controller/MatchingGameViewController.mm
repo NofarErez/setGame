@@ -40,6 +40,7 @@ static const int kCardCount = 12;
     return _game;
 }
 
+
 - (void)drawCards {
     for (int i = 0; i < kCardCount; i++)
     {
@@ -47,18 +48,15 @@ static const int kCardCount = 12;
         int row = i / [self.grid rowCount];
         int column = i % [self.grid rowCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
-        PlayingCardView *cardView = [[PlayingCardView alloc] initWithFrame:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width * 0.9, frame.size.height * 0.9)];
+        PlayingCardView *cardView = [[PlayingCardView alloc] initWithFrame:CGRectMake(-100, -100, frame.size.width * 0.9, frame.size.height * 0.9)];
         if ([card isKindOfClass:[PlayingCard class]])
         {
             cardView.rank = ((PlayingCard *)card).rank;
             cardView.suit = ((PlayingCard *)card).suit;
             [cardView addGestureRecognizer:[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)]];
-//            [cardView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:cardView action:@selector(pinch:)]];
-
-            [UIView transitionWithView:self.cardsView duration:1.0 options:UIViewAnimationOptionTransitionCurlDown animations:^{
-                                [self.cardsView addSubview:cardView];
-            } completion:NULL];
+            [self.cardsView addSubview:cardView];
         }
+        [self moveCard:cardView toRect:frame];
     }
 }
 
@@ -67,22 +65,20 @@ static const int kCardCount = 12;
     if([sender.view isKindOfClass:[PlayingCardView class]])
     {
         PlayingCardView *view = (PlayingCardView *)sender.view;
-        view.faceUp = !view.faceUp;
+        view.chosen = !view.chosen;
     }
     
     NSUInteger cardIndex = [self.cardsView.subviews indexOfObject:sender.view];
-    [self.game chooseCardAtIndex:cardIndex];
-    [self updateUIMatchingResult];
-
+    [self performSelector:@selector(chooseCard:) withObject:[NSNumber numberWithUnsignedInteger:cardIndex] afterDelay:0.1];
 }
 
 - (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card
 {
     if ([cardView isKindOfClass:[PlayingCardView class]]) {
         PlayingCardView *view = (PlayingCardView *)cardView;
-        if (![card chosen] && [view faceUp])
+        if (![card chosen] && [view chosen])
         {
-            view.faceUp = card.chosen;
+            view.chosen = card.chosen;
         }
     }
 }

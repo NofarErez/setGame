@@ -41,18 +41,19 @@ static const int kCardCount = 12;
     [self.cardsView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
     [self setupGame];
     [self drawCards];
-//    [self game];
+}
+
+//- (IBAction)touchCardButton:(UIButton *)sender
+//{
+//    NSUInteger cardIndex = [self.cardsButtons indexOfObject:sender];
+//    [self.game chooseCardAtIndex:cardIndex];
 //    [self updateUIMatchingResult];
+//}
+
+- (void) updateScoreLabel {
+    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+
 }
-
-- (IBAction)touchCardButton:(UIButton *)sender
-{
-    NSUInteger cardIndex = [self.cardsButtons indexOfObject:sender];
-    [self.game chooseCardAtIndex:cardIndex];
-    [self updateUIMatchingResult];
-}
-
-
 
 - (void) updateUIMatchingResult
 {
@@ -69,21 +70,22 @@ static const int kCardCount = 12;
 }
 
 
-//- (UIImage *) backgroundImageForCard: (Card *)card
-//{
-//    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-//                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-//                                 userInfo:nil];
-//}
-//
-//- (NSAttributedString *) buttonTitleForCard:(Card *)card
-//{
-//    return [self titleForCard:card];
-//}
-//
-
 - (void)rearangeBoard {
-    
+    for (int i =0; i < [self.cardsView.subviews count]; i++) {
+        int row = i / [self.grid rowCount];
+        int column = i % [self.grid rowCount];
+        CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
+        [self moveCard:self.cardsView.subviews[i] toRect:frame];
+    }
+}
+- (void) moveCard:(UIView *)cardView toRect:(CGRect)finalPos {
+    [UIView animateWithDuration:0.5
+                          delay:1.0
+                        options: UIViewAnimationOptionCurveLinear
+                     animations:^ {
+                         [cardView setFrame:finalPos];
+                     }
+                     completion:nil];
 }
 
 
@@ -97,44 +99,41 @@ static const int kCardCount = 12;
     [self rearangeBoard];
 }
 
-- (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card
-{
+- (void) chooseCard:(NSNumber *)cardIndex {
     
+    [self.game chooseCardAtIndex:[cardIndex unsignedIntegerValue]];
+    [self updateUIMatchingResult];
 }
+
+- (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card {}
 
 - (void) updateCardButtons
 {
-    NSMutableArray *cardsToRemove = [[NSMutableArray alloc] init];
     for (UIView *cardView in self.cardsView.subviews)
     {
         NSUInteger cardIndex = [self.cardsView.subviews indexOfObject:cardView];
         Card *card = [self.game cardAtIndex:cardIndex];
         [self updateChosenFromCard:cardView fromCard:card];
         if(card.matched) {
-//            [cardsToRemove addObject:cardView];
             [UIView transitionWithView:self.cardsView duration:1.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
                 [cardView removeFromSuperview];
             } completion:NULL];
             [self.game removeCardAtIndex:cardIndex];
-        }
+            [self rearangeBoard];
 
+        }
     }
-    
-//    if ([cardsToRemove count]) {
-//        [self removeCard:cardsToRemove];
-//    }
 }
 
 - (void)setupGame {
     
     self.grid = [[Grid alloc] init];
     self.grid.cellAspectRatio = 0.666;
-    self.grid.size = self.cardsView.bounds.size; // what is the right size?
-//    NSLog(@"%@", self.cardsView.bounds);
-//    NSLog(@"%d", kCardCount);
+    self.grid.size = self.cardsView.bounds.size;
     self.grid.minimumNumberOfCells = kCardCount;
     
     [self createGame];
+    [self updateScoreLabel];
 }
 
 - (void)drawCards {

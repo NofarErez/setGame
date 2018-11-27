@@ -44,9 +44,9 @@
     [self setNeedsDisplay];
 }
 
-- (void)setFaceUp:(BOOL)faceUp
+- (void)setChosen:(BOOL)faceUp
 {
-    _faceUp = faceUp;
+    _chosen = faceUp;
     [self setNeedsDisplay];
 }
 
@@ -90,12 +90,12 @@
     [[UIColor blackColor] setStroke];
     [roundedRect stroke];
     
-    [self flipCard];
+    [self chooseCard];
     
 }
 
-- (void)flipCard {
-    if (self.faceUp) {
+- (void)chooseCard {
+    if (self.chosen) {
         UIImage *faceImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@%@", [self rankAsString], self.suit]];
         
         [UIView transitionWithView:self duration:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^(void) {
