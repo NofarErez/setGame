@@ -45,8 +45,8 @@ static const int kCardCount = 12;
     for (int i = 0; i < kCardCount; i++)
     {
         Card *card = [self.game cardAtIndex:i];
-        int row = i / [self.grid rowCount];
-        int column = i % [self.grid rowCount];
+        int column = i / [self.grid rowCount];
+        int row = i % [self.grid rowCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
         PlayingCardView *cardView = [[PlayingCardView alloc] initWithFrame:CGRectMake(-100, -100, frame.size.width * 0.9, frame.size.height * 0.9)];
         if ([card isKindOfClass:[PlayingCard class]])
