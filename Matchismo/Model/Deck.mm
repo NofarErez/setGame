@@ -51,6 +51,9 @@ NS_ASSUME_NONNULL_BEGIN
     
 }
 
+- (BOOL)empty {
+    return [self.cards count] <= 0;
+}
 
 @end
 

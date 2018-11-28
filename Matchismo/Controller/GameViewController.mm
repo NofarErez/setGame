@@ -38,17 +38,9 @@ static const int kCardCount = 12;
 
 - (IBAction)touchRestartButton:(id)sender
 {
-    [self.cardsView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
     [self setupGame];
     [self drawCards];
 }
-
-//- (IBAction)touchCardButton:(UIButton *)sender
-//{
-//    NSUInteger cardIndex = [self.cardsButtons indexOfObject:sender];
-//    [self.game chooseCardAtIndex:cardIndex];
-//    [self updateUIMatchingResult];
-//}
 
 - (void) updateScoreLabel {
     self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
@@ -62,18 +54,10 @@ static const int kCardCount = 12;
 }
 
 
-- (NSAttributedString *) titleForCard: (Card *)card
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
-
 - (void)rearangeBoard {
     for (int i =0; i < [self.cardsView.subviews count]; i++) {
-        int row = i / [self.grid rowCount];
-        int column = i % [self.grid rowCount];
+        int column = i / [self.grid rowCount];
+        int row = i % [self.grid rowCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
         [self moveCard:self.cardsView.subviews[i] toRect:frame];
     }
@@ -123,6 +107,19 @@ static const int kCardCount = 12;
 
         }
     }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    self.grid.size = CGSizeMake(self.cardsView.bounds.size.height, self.cardsView.bounds.size.width);
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        
+        [self rearangeBoard];
+        
+    } completion:nil];
 }
 
 - (void)setupGame {

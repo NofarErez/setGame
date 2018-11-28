@@ -8,7 +8,6 @@ NS_ASSUME_NONNULL_BEGIN
 @implementation SetCard
 
 NSUInteger kSimilarParameters = 1;
-NSUInteger kUniqueParameters = 3;
 
 @synthesize contents = _contents;
 
@@ -18,23 +17,23 @@ NSUInteger kUniqueParameters = 3;
     {
         if ([card isKindOfClass:[SetCard class]])
         {
-            self.shape = [card valueForKey:@"shape"];
-            self.color = [card valueForKey:@"color"];
+            self.shape = [[card valueForKey:@"shape"] integerValue];
+            self.color = [[card valueForKey:@"color"] integerValue];
             self.rank = [[card valueForKey:@"rank"] integerValue];
-            self.shade = [[card valueForKey:@"shade"] floatValue];
+            self.fill = [[card valueForKey:@"fill"] integerValue];
         }
     }
     
     return self;
 }
 
+- (NSUInteger)uniqueParameters {
+    return 3;
+}
+
 - (NSString *) contents
 {
-    if(!_contents)
-    {
-        _contents = [@"" stringByPaddingToLength:self.rank  withString:self.shape startingAtIndex:0];
-    }
-    return _contents;
+    return nil;
 }
 
 + (BOOL) validParameter: (NSSet *)parameters
@@ -62,7 +61,7 @@ NSUInteger kUniqueParameters = 3;
 
 + (BOOL) matchShade: (NSArray *)cards
 {
-    NSSet *shades = [NSSet setWithArray:[cards valueForKey:@"shade"]];
+    NSSet *shades = [NSSet setWithArray:[cards valueForKey:@"fill"]];
     return [SetCard validParameter:shades];
 }
 
@@ -78,25 +77,25 @@ NSUInteger kUniqueParameters = 3;
     return score;
 }
 
-+ (NSArray *) validShapes
-{
-    return @[@"▲", @"■", @"●"];
-}
-
-+ (NSArray *) validShades
-{
-    return @[@0.1, @0.6, @1.0];
-}
-
-+ (NSArray *) validColors
-{
-    return @[@"Red", @"Blue", @"Green"];
-}
-
-+ (NSArray *) validRanks
-{
-    return @[@1, @2, @3];
-}
+//+ (NSArray *) validShapes
+//{
+//    return @[@"▲", @"■", @"●"];
+//}
+//
+//+ (NSArray *) validShades
+//{
+//    return @[@0.1, @0.6, @1.0];
+//}
+//
+//+ (NSArray *) validColors
+//{
+//    return @[@"Red", @"Blue", @"Green"];
+//}
+//
+//+ (NSArray *) validRanks
+//{
+//    return @[@1, @2, @3];
+//}
 
 
 @end

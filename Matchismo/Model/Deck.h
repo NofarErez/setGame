@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Method that draws a random card form the deck.
 - (Card *)drawRandomCard;
 
+- (BOOL)empty;
+
 @end
 
 NS_ASSUME_NONNULL_END

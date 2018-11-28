@@ -12,19 +12,19 @@ NS_ASSUME_NONNULL_BEGIN
 {
     if (self = [super init])
     {
-        for (NSString *shape in [SetCard validShapes])
+        for (int shape = 0; shape < kUniqueParameters; shape++)
         {
-            for (NSString *color in [SetCard validColors])
+            for (int color = 0; color < kUniqueParameters; color++)
             {
-                for (int shade = 0; shade < [[SetCard validShades] count]; shade++)
+                for (int fill = 0; fill < kUniqueParameters; fill++)
                 {
-                    for (int rank = 0; rank < [[SetCard validRanks] count]; rank ++)
+                    for (int rank = 0; rank < kUniqueParameters; rank ++)
                     {
                         SetCard *card = [[SetCard alloc] init];
-                        card.rank = [[[SetCard validRanks] objectAtIndex:rank] integerValue];
+                        card.rank = rank;
                         card.shape = shape;
                         card.color = color;
-                        card.shade = [[[SetCard validShades] objectAtIndex:shade] floatValue];
+                        card.fill = fill;
                         [self addCard:card];
                     }
                 }

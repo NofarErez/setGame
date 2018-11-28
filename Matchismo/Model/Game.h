@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeCardAtIndex:(NSUInteger)index;
 
+- (BOOL)emptyDeck;
+
+- (NSArray *)addCardsToGame:(NSUInteger)cardsToAdd;
 // The score of the game.
 @property (nonatomic, readonly) NSInteger score;
 

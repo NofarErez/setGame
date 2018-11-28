@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSMutableArray *cards;
 @property (nonatomic, readwrite) NSInteger score;
+@property (nonatomic, strong) Deck *deck;
 
 @end
 
@@ -24,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
     {
         [self createCards];
         [self createTestMatchCards];
-        
+        self.deck = deck;
         for(int i = 0; i < count; i++)
         {
             Card *card = [deck drawRandomCard];
@@ -145,6 +146,25 @@ NS_ASSUME_NONNULL_BEGIN
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
                                  userInfo:nil];
+}
+
+- (NSArray *)addCardsToGame:(NSUInteger)cardsToAdd {
+    NSMutableArray *newCards = [[NSMutableArray alloc] init];
+    for (int count = 0; count < cardsToAdd; count++) {
+        Card *card = [self.deck drawRandomCard];
+        if (card) {
+            [self.cards addObject:card];
+            [newCards addObject:card];
+        }
+        else {
+            break;
+        }
+    }
+    return newCards;
+}
+
+- (BOOL)emptyDeck {
+    return [self.deck empty];
 }
 
 @end
