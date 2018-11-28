@@ -66,8 +66,8 @@ static const int kInitialCardCount = 12;
 - (void)increaseCurrentCardsView {
     for (int i = 0; i < [self cardCount]; i++)
     {
-        int column = i / [self.grid rowCount];
-        int row = i % [self.grid rowCount];
+        int column = i % [self.grid columnCount];
+        int row = i / [self.grid columnCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
         
         [UIView animateWithDuration:0.5
@@ -84,8 +84,8 @@ static const int kInitialCardCount = 12;
 
 - (void) addCardView:(CGPoint)initalPos atIndex:(NSUInteger)index {
     Card *card = [self.game cardAtIndex:index];
-    int column = index / [self.grid rowCount];
-    int row = index % [self.grid rowCount];
+    int column = index % [self.grid columnCount];
+    int row = index / [self.grid columnCount];
     CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
     SetCardView *cardView = [[SetCardView alloc] initWithFrame:CGRectMake(initalPos.x, initalPos.y, frame.size.width * 0.75, frame.size.height * 0.75)];
     if ([card isKindOfClass:[SetCard class]])

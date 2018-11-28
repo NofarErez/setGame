@@ -56,8 +56,8 @@ static const int kCardCount = 12;
 
 - (void)rearangeBoard {
     for (int i =0; i < [self.cardsView.subviews count]; i++) {
-        int column = i / [self.grid rowCount];
-        int row = i % [self.grid rowCount];
+        int column = i % [self.grid columnCount];
+        int row = i / [self.grid columnCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
         [self moveCard:self.cardsView.subviews[i] toRect:frame];
     }
