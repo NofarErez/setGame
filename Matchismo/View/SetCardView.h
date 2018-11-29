@@ -6,12 +6,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
-
+// Object used as the Card Matching Game view.
 @interface SetCardView : UIView
 @property (strong, nonatomic) SetCard* card;
 @property (nonatomic) BOOL chosen;
-
 @end
 
 NS_ASSUME_NONNULL_END

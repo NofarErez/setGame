@@ -2,26 +2,21 @@
 // Created by Nofar Erez.
 
 #import "GameViewController.h"
+#import "MovingStackBehavior.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface GameViewController()
 @property (weak, nonatomic) IBOutlet UIView *ButtonsView;
-
+@property (strong, nonatomic) UIDynamicAnimator *animator;
+@property (strong, nonatomic) MovingStackBehavior *movingStackBehavior;
+@property (strong, nonatomic) UIAttachmentBehavior *attachment;
 @end
 
 @implementation GameViewController
 
-static const int kCardCount = 12;
 
 - (Deck *) createDeck
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
-- (Game *) game
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)]
@@ -39,7 +34,43 @@ static const int kCardCount = 12;
 - (IBAction)touchRestartButton:(id)sender
 {
     [self setupGame];
-    [self drawCards];
+}
+
+- (IBAction)pinch:(UIPinchGestureRecognizer *)sender
+{
+    CGSize cellSize = self.grid.cellSize;
+    CGRect viewMiddle = CGRectMake((self.cardsView.bounds.size.width - cellSize.width) / 2, (self.cardsView.bounds.size.height - cellSize.height) / 2, kCardFrameRatio * cellSize.width, kCardFrameRatio * cellSize.height);
+    for (UIView *subView in self.cardsView.subviews) {
+        [self moveCard:subView toRect:viewMiddle];
+    }
+    self.deckStacked = YES;
+}
+
+- (IBAction)tapToSpreadDeck:(UITapGestureRecognizer *)sender {
+    [self rearangeBoard];
+    self.deckStacked = NO;
+
+}
+
+- (IBAction)pan:(UIPanGestureRecognizer *)sender {
+    if (self.deckStacked)
+    {
+        CGPoint gesturePoint = [sender locationInView:self.cardsView];
+        if (sender.state == UIGestureRecognizerStateBegan) {
+            [self attachDroppingViewToPoint:gesturePoint];
+        } else if (sender.state == UIGestureRecognizerStateChanged) {
+            self.attachment.anchorPoint = gesturePoint;
+        } else if (sender.state == UIGestureRecognizerStateEnded) {
+            [self.animator removeBehavior:self.attachment];
+        }
+    }
+}
+
+- (void)attachDroppingViewToPoint:(CGPoint)anchorPoint
+{
+    self.attachment = [[UIAttachmentBehavior alloc] initWithItem:self.cardsView attachedToAnchor:anchorPoint];
+    [self.animator addBehavior:self.attachment];
+    
 }
 
 - (void) updateScoreLabel {
@@ -47,10 +78,10 @@ static const int kCardCount = 12;
 
 }
 
-- (void) updateUIMatchingResult
+- (void) updateUIAfterMatch
 {
-    [self updateCardButtons];
-    self.scoreLabel.text = [NSString stringWithFormat:@"Score: %ld", (long)self.game.score];
+    [self updateCardsViewAfterMatch];
+    [self updateScoreLabel];
 }
 
 
@@ -59,12 +90,14 @@ static const int kCardCount = 12;
         int column = i % [self.grid columnCount];
         int row = i / [self.grid columnCount];
         CGRect frame = [self.grid frameOfCellAtRow:row inColumn:column];
-        [self moveCard:self.cardsView.subviews[i] toRect:frame];
+        
+        [self moveCard:self.cardsView.subviews[i] toRect:CGRectMake(frame.origin.x, frame.origin.y, frame.size.width * kCardFrameRatio, frame.size.height * kCardFrameRatio)];
     }
 }
+
 - (void) moveCard:(UIView *)cardView toRect:(CGRect)finalPos {
     [UIView animateWithDuration:0.5
-                          delay:1.0
+                          delay:0.1
                         options: UIViewAnimationOptionCurveLinear
                      animations:^ {
                          [cardView setFrame:finalPos];
@@ -73,25 +106,24 @@ static const int kCardCount = 12;
 }
 
 
-- (void)removeCard:(NSMutableArray *)cardsView {
-    for (UIView *cardView in cardsView)
-    {
-        [UIView transitionWithView:cardView duration:1.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
-            [cardView removeFromSuperview];
-        } completion:NULL];
-    }
-    [self rearangeBoard];
-}
+//- (void)removeCard:(NSMutableArray *)cardsToRemove {
+//    for (UIView *cardView in cardsToRemove)
+//    {
+//        [UIView transitionWithView:cardView duration:1.0 options:UIViewAnimationOptionTransitionCrossDissolve animations:^{
+//            [cardView removeFromSuperview];
+//        } completion:NULL];
+//    }
+//    [self rearangeBoard];
+//}
 
 - (void) chooseCard:(NSNumber *)cardIndex {
-    
     [self.game chooseCardAtIndex:[cardIndex unsignedIntegerValue]];
-    [self updateUIMatchingResult];
+    [self updateUIAfterMatch];
 }
 
 - (void)updateChosenFromCard:(UIView *)cardView fromCard:(Card *)card {}
 
-- (void) updateCardButtons
+- (void) updateCardsViewAfterMatch
 {
     for (UIView *cardView in self.cardsView.subviews)
     {
@@ -104,49 +136,54 @@ static const int kCardCount = 12;
             } completion:NULL];
             [self.game removeCardAtIndex:cardIndex];
             [self rearangeBoard];
+            self.cardCount --;
 
         }
     }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
-    self.grid.size = CGSizeMake(self.cardsView.bounds.size.height, self.cardsView.bounds.size.width);
-    
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        
-        [self rearangeBoard];
-        
-    } completion:nil];
+- (void) viewDidLayoutSubviews {
+    self.grid.size = self.cardsView.bounds.size;
+    [self rearangeBoard];
 }
 
 - (void)setupGame {
+    [self createGame];
+    [self updateScoreLabel];
     
     self.grid = [[Grid alloc] init];
     self.grid.cellAspectRatio = 0.666;
     self.grid.size = self.cardsView.bounds.size;
-    self.grid.minimumNumberOfCells = kCardCount;
+    self.grid.minimumNumberOfCells = self.cardCount;
     
-    [self createGame];
-    [self updateScoreLabel];
+    self.movingStackBehavior = [[MovingStackBehavior alloc] init];
+    self.animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.cardsView];
+    [self.animator addBehavior:self.movingStackBehavior];
+
+    [self.cardsView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)]];
+    [self.cardsView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToSpreadDeck:)]];
+    [self.cardsView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)]];
+    
+    self.deckStacked = NO;
+    
+    [self drawCards];
 }
 
 - (void)drawCards {
+    [self.cardsView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+    for (int i = 0; i < [self cardCount]; i++)
+    {
+        [self addCardView:CGPointMake(-100, -100) atIndex:i];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     [self setupGame];
-
-    [self drawCards];
-
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
+- (void) addCardView:(CGPoint)initalPos atIndex:(NSUInteger)index {}
 
 @end
 

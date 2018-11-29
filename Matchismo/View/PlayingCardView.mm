@@ -1,12 +1,8 @@
-//
-//  PlayingCardView.m
-//  SuperCard
-//
-//  Created by CS193p Instructor.
-//  Copyright (c) 2013 Stanford University. All rights reserved.
-//
-
+// Copyright (c) 2018 Lightricks. All rights reserved.
+// Created by Nofar Erez.
 #import "PlayingCardView.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayingCardView()
 @property (nonatomic) CGFloat faceCardScaleFactor;
@@ -75,11 +71,8 @@
 - (CGFloat)cornerRadius { return CORNER_RADIUS * [self cornerScaleFactor]; }
 - (CGFloat)cornerOffset { return [self cornerRadius] / 3.0; }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
     UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
     
     [roundedRect addClip];
@@ -248,3 +241,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

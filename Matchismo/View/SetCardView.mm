@@ -76,11 +76,8 @@ static const float k3PipsHeightStartsRatio = 0.08;
 - (CGFloat)cornerRadius { return CORNER_RADIUS * [self cornerScaleFactor]; }
 - (CGFloat)cornerOffset { return [self cornerRadius] / 3.0; }
 
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
     UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:self.bounds cornerRadius:[self cornerRadius]];
     
     [roundedRect addClip];
@@ -89,6 +86,8 @@ static const float k3PipsHeightStartsRatio = 0.08;
     UIRectFill(self.bounds);
     
     UIColor *strokeColor = self.chosen ? [UIColor blueColor] : [UIColor blackColor];
+    
+    roundedRect.lineWidth = self.chosen ? 5 : 1;
     [strokeColor setStroke];
     [roundedRect stroke];
     

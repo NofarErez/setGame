@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Matchismo/View/SetCardView.mm"
-            timestampString = "565109594.701416"
+            filePath = "Matchismo/Controller/GameViewController.mm"
+            timestampString = "565181965.4394619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
-            landmarkName = "-drawRect:"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "-viewDidAppear:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.701759"
+            timestampString = "565181965.439687"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
-            landmarkName = "-viewWillTransitionToSize:withTransitionCoordinator:"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
+            landmarkName = "-drawCards"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.702011"
+            timestampString = "565181965.439749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "-setupGame"
             landmarkType = "7">
          </BreakpointContent>
@@ -58,12 +58,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.7020741"
+            timestampString = "565181965.4397939"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
-            landmarkName = "-setupGame"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-tapToSpreadDeck:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -73,45 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.702121"
+            filePath = "Matchismo/Controller/MatchingGameViewController.mm"
+            timestampString = "565181965.439835"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "-rearangeBoard"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.702165"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
-            landmarkName = "-viewWillTransitionToSize:withTransitionCoordinator:"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Matchismo/Controller/GameViewController.mm"
-            timestampString = "565109594.702208"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "-rearangeBoard"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "-tap:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
